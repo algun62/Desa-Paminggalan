@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desa Wisata Paminggalan</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Feather Icons for UI -->
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <style>
+        /* Custom Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Light gray background */
+        }
+        
+        /* Style for the active navigation link */
+        .nav-link.active {
+            color: #10b981; /* Emerald-500 */
+            font-weight: 600;
+            position: relative;
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #10b981;
+        }
+
+        /* Fade-in animation for page content */
+        .page-content {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Simple modal style */
+        .modal-backdrop {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 50;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Header & Navigation -->
+    <header class="bg-white shadow-md sticky top-0 z-40">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo / Village Name -->
+                <div class="flex-shrink-0">
+                    <a href="#" class="flex items-center space-x-2">
+                        <i data-feather="sun" class="text-emerald-500"></i>
+                        <span class="text-xl font-bold text-gray-800">Desa Paminggalan</span>
+                    </a>
+                </div> 
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#home" class="nav-link text-gray-600 hover:text-emerald-500 transition duration-150 ease-in-out active" onclick="showPage('home', this)">Beranda</a>
+                    <a href="#profile" class="nav-link text-gray-600 hover:text-emerald-500 transition duration-150 ease-in-out" onclick="showPage('profile', this)">Profil Desa</a>
+                    <a href="#umkm" class="nav-link text-gray-600 hover:text-emerald-500 transition duration-150 ease-in-out" onclick="showPage('umkm', this)">UMKM</a>
+                    <a href="#about" class="nav-link text-gray-600 hover:text-emerald-500 transition duration-150 ease-in-out" onclick="showPage('about', this)">Tentang</a>
+                    <a href="#contact" class="nav-link text-gray-600 hover:text-emerald-500 transition duration-150 ease-in-out" onclick="showPage('contact', this)">Kontak</a>
+                    <a href="#message" class="nav-link text-gray-600 hover:text-emerald-500 transition duration-150 ease-in-out" onclick="showPage('message', this)">Kirim Pesan</a>
+                    <a href="#map" class="nav-link text-gray-600 hover:text-emerald-500 transition duration-150 ease-in-out" onclick="showPage('map', this)">Peta</a>
+                    <a href="#blooklet" class="nav-link text-gray-600 hover:text-emerald-500 transition duration-150 ease-in-out" onclick="showPage('blooklet', this)">Blooklet</a>
+                </nav>
+                
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-gray-600 hover:text-emerald-500 focus:outline-none">
+                        <i data-feather="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="md:hidden hidden bg-white border-t border-gray-200">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                   <a href="#home" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-emerald-500 hover:bg-gray-50" onclick="showPage('home', this); closeMobileMenu();">Beranda</a>
+                   <a href="#profile" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-emerald-500 hover:bg-gray-50" onclick="showPage('profile', this); closeMobileMenu();">Profil Desa</a>
+                   <a href="#umkm" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-emerald-500 hover:bg-gray-50" onclick="showPage('umkm', this); closeMobileMenu();">UMKM</a>
+                   <a href="#about" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-emerald-500 hover:bg-gray-50" onclick="showPage('about', this); closeMobileMenu();">Tentang</a>
+                   <a href="#contact" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-emerald-500 hover:bg-gray-50" onclick="showPage('contact', this); closeMobileMenu();">Kontak</a>
+                   <a href="#message" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-emerald-500 hover:bg-gray-50" onclick="showPage('message', this); closeMobileMenu();">Kirim Pesan</a>
+                   <a href="#map" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-emerald-500 hover:bg-gray-50" onclick="showPage('map', this); closeMobileMenu();">Peta</a>
+                   <a href="#blooklet" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-emerald-500 hover:bg-gray-50" onclick="showPage('blooklet', this); closeMobileMenu();">Blooklet</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main id="main-content" class="container mx-auto p-4 sm:p-6 lg:p-8">
+        <!-- Home Page -->
+        <div id="home" class="page-content">
+            <div class="rounded-lg overflow-hidden">
+                <!-- Image container -->
+                <img src="desa.webp" alt="Desa" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+                    <!-- This div is now empty, as text and button are moved out -->
+                </div>
+                <!-- Text and button moved below the image container -->
+                <div class="bg-white p-6 md:p-8 text-center rounded-b-lg shadow-lg -mt-4 relative z-10">
+                    <h1 class="text-3xl md:text-5xl font-bold text-gray-800 leading-tight">Temukan Keindahan Desa Paminggalan</h1>
+                    <p class="mt-3 text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">Perjalanan tak terlupakan Anda menuju alam, budaya, dan ketenangan dimulai di sini.</p>
+                    <button class="mt-6 px-8 py-3 bg-emerald-500 text-white font-semibold rounded-lg shadow-lg hover:bg-emerald-600 transition duration-300" onclick="showPage('profile')">
+                        Jelajahi Wisata
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Village Profile Page -->
+        <div id="profile" class="page-content hidden">
+            <h2 class="text-3xl font-bold text-gray-900 mb-6 text-center">Objek Wisata</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">Jelajahi pemandangan menakjubkan dan tengara budaya yang menjadikan desa kami permata tersembunyi. Setiap tempat menceritakan kisah yang unik.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Attraction 1: Waterfall -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden group">
+                    <img src="air terjun.webp" alt="Air Terjun Palappang" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">Air Terjun Palappang</h3>
+                        <p class="text-gray-600">Air terjun yang menawarkan keindahan yang eksotis. Sempurna untuk berenang atau piknik.</p>
+                    </div>
+                </div>
+                <!-- Attraction 2: Rice Terraces -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden group">
+                    <img src="sungai dkt d.webp" alt="Sungai Desa" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">Sungai Desa Paminggalan</h3>
+                        <p class="text-gray-600">Sungai yang melukis pemandangan dengan nuansa menakjubkan dan jernih.</p>
+                    </div>
+                </div>
+                
+                <!-- Attraction 3: Mountain Viewpoint -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden group">
+                    <img src="gunung.webp" alt="Gunung Garonggong" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">Gunung Garonggong</h3>
+                        <p class="text-gray-600">Mendaki ke puncak untuk pemandangan panorama seluruh lembah. Matahari terbit dari sini sungguh ajaib.</p>
+                    </div>
+                </div>
+                <!-- Attraction 4: Hutan Desa -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden group">
+                    <img src="hutan.webp" alt="Hutan" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">Hutan Desa Paminggalan</h3>
+                        <p class="text-gray-600">Hutan yang menawarkan kesejukan dan keindahannya</p>
+                    </div>
+                </div>
+                <!-- Attraction 5: Serene River -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden group">
+                    <img src="alam.webp" alt="Alam" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">Objek Alam Desa Paminggalan</h3>
+                        <p class="text-gray-600">Alam yang tenang cocok untuk bersantai dan sejuk.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- UMKM Page -->
+        <div id="umkm" class="page-content hidden">
+            <h2 class="text-3xl font-bold text-gray-900 mb-6 text-center">UMKM Desa Paminggalan</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">Dukung ekonomi lokal yang ada di desa paminggalan dengan menjelajahi produk. Setiap pembelian membantu memberdayakan masyarakat desa.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- UMKM Item 1: Kemirih Desa Paminggalan -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden group">
+                    <img src="kemirih.webp" alt="Kemirih" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">Kemirih Lokal Desa</h3>
+                        <p class="text-gray-600">Kemirih langsung dari kebun masyarakat yang ada di desa paminggalan sala satu sumber mata pencarian masyarakat.</p>
+                    </div>
+                </div>
+
+                <!-- UMKM Item 2: Gula Aren -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden group">
+                    <img src="gula aren.webp" alt="Gula Aren" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">Gula Aren</h3>
+                        <p class="text-gray-600">Gula aren khas desa paminggalan yang di buat langsung oleh masyarakat kemudian nantinya di jual ke-kota manisnya pas </p>
+                    </div>
+                </div>
+                <!-- UMKM Item 3: Produk Pertanian -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden group">
+                    <img src="udang.webp" alt="Produk Pertanian Organik" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">Udang Sungai</h3> 
+                        <p class="text-gray-600">Udang yang segar langsung ambil disungai desa paminggalan. Udang alami yang berasal dari desa paminggalan yang ada manis manisnya</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- About Page -->
+        <div id="about" class="page-content hidden">
+            <div class="bg-white p-8 rounded-lg shadow-lg max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4 text-center">Tentang Desa Paminggalan</h2>
+                <div class="flex flex-col items-center gap-8">
+                    <img src="desa01.webp" alt="Pemandangan Desa" class="w-full h-auto rounded-lg object-cover mb-6">
+                    <div class="text-gray-600 space-y-4 text-lg">
+                        <p>Terletak di jantung alam, Desa Paminggalan telah menjadi tempat perlindungan kedamaian selama beberapa generasi. Desa paminggalan memiliki keindahan alam yang tak tertandingi</p>
+                        <p>Misi kami adalah melestarikan warisan alam dan budaya kami sambil berbagi keindahannya dengan dunia. Kami mempraktikkan pariwisata berkelanjutan, memastikan bahwa setiap kunjungan mendukung masyarakat lokal dan melindungi lingkungan kita untuk dinikmati generasi mendatang.</p>
+                        <p>Kami mengundang Anda untuk menjadi lebih dari sekadar turis; jadilah tamu kami. Rasakan keramahan kami yang hangat, pelajari tradisi kami, dan ciptakan kenangan yang akan bertahan seumur hidup.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Page -->
+        <div id="contact" class="page-content hidden">
+            <div class="bg-white p-8 rounded-lg shadow-lg max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-gray-900 mb-6 text-center">Hubungi Kami</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
+                    <!-- Contact Info -->
+                    <div class="space-y-4">
+                        <h3 class="text-xl font-semibold text-gray-800">Informasi Kontak</h3>
+                        <div class="flex items-center justify-center space-x-3 text-gray-600 px-4">
+                            <i data-feather="map-pin" class="w-5 h-5 text-emerald-500 flex-shrink-0"></i>
+                            <span>JWR8+JPJ, Desa Paminggalan, Kec. Sendana, Kabupaten Majene, Sulawesi Barat 91452</span>
+                        </div>
+                        <div class="flex items-center justify-center space-x-3 text-gray-600">
+                            <i data-feather="phone" class="w-5 h-5 text-emerald-500"></i>
+                            <span>+62 819 1548 1272</span>
+                        </div>
+                    <div class="contact-link">
+                        <a href="https://wa.me/+6281915481272" target="_blank">
+                        <img src="wa.webp" alt="WhatsApp" class="whatsapp-icon">
+                        </a>
+                    </div>
+                        <div class="flex items-center justify-center space-x-3 text-gray-600">
+                            <i data-feather="mail" class="w-5 h-5 text-emerald-500"></i>
+                            <span>kontak@desapaminggalan.id</span>
+                        </div>
+                    </div>
+                    <!-- Social Media -->
+                    <div class="space-y-4">
+                        <h3 class="text-xl font-semibold text-gray-800">Ikuti Kami</h3>
+                        <div class="flex justify-center space-x-6">
+                            <a href="https://www.instagram.com/harunasrifandi/?igsh=dTJxbGdocG5tMDlt#" target="_blank" class="text-gray-500 hover:text-emerald-500"><i data-feather="instagram" class="w-7 h-7"></i></a>
+                            <a href="https://www.facebook.com/share/1GDsur1hh7/" target="_blank" class="text-gray-500 hover:text-emerald-500"><i data-feather="facebook" class="w-7 h-7"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Message Page -->
+        <div id="message" class="page-content hidden">
+            <div class="bg-white p-8 rounded-lg shadow-lg max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-gray-900 mb-2 text-center">Kirim Pesan</h2>
+                <p class="text-center text-gray-600 mb-6">Ada pertanyaan atau masukan? Kami ingin mendengar dari Anda!</p>
+                <form id="contact-form">
+                    <div class="space-y-4">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
+                            <input type="text" id="name" name="name" required class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700">Alamat Email</label>
+                            <input type="email" id="email" name="email" required class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500">
+                        </div>
+                        <div>
+                            <label for="message-text" class="block text-sm font-medium text-gray-700">Pesan</label>
+                            <textarea id="message-text" name="message" rows="4" required class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"></textarea>
+                        </div>
+                        <div>
+                            <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-emerald-500 hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">
+                                Kirim Pesan
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Map Page -->
+        <div id="map" class="page-content hidden">
+             <div class="bg-white p-4 rounded-lg shadow-lg max-w-6xl mx-auto">
+                <h2 class="text-3xl font-bold text-gray-900 mb-6 text-center">Peta Desa Paminggalan</h2>
+                 <div class="text-gray-600 space-y-4 text-lg">
+                    <p>Ini adalah peta desa paminggalan silahkan mengeksplorasi. Ketuk + untuk memperbesar - untuk meperkecil jika memakai labtop klik dua kali pada touchpad/mouse lalu geser</p>
+                 <div>   
+                <div class="w-full h-[70vh] rounded-lg overflow-hidden border-4 border-emerald-200">
+                    <iframe
+                        class="w-full h-full"
+                        frameborder="0" style="border:0"
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3983.332616536301!2d118.9141968!3d-3.3584053!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2d94a5007c6b4255%3A0x446aa4baff597bf2!2sDESA%20PAMINGGALAN!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid"
+                        allowfullscreen=""
+                        loading="lazy">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </main>          
+        
+     <!-- Blooklet -->
+        <div id="blooklet" class="page-content">
+            <div class="rounded-lg overflow-hidden">
+                <!-- Image container -->
+                <div class="h-[60vh] bg-white flex justify-center items-center">
+                    <embed src="eBOOKLET.pdf" width="100%" height="100%" type="application/pdf" class="rounded-lg shadow-lg">
+                </div>    
+            <div>        
+        <div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t mt-12">
+        <div class="container mx-auto px-6 py-4 text-center text-gray-600">
+            <p>© 2025 Desa Wisata Paminggalan. Hak Cipta Dilindungi.</p>
+        </div>
+    </footer>
+
+    <!-- Success Modal -->
+    <div id="success-modal" class="modal-backdrop">
+        <div class="bg-white rounded-lg shadow-xl p-8 m-4 max-w-sm w-full text-center">
+            <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+                <i data-feather="check" class="h-6 w-6 text-green-600"></i>
+            </div>
+            <h3 class="text-lg leading-6 font-medium text-gray-900 mt-4">Pesan Terkirim!</h3>
+            <div class="mt-2 px-7 py-3">
+                <p class="text-sm text-gray-500">Terima kasih telah menghubungi kami. Kami akan segera menghubungi Anda kembali.</p>
+            </div>
+            <div class="items-center px-4 py-3">
+                <button id="close-modal-button" class="px-4 py-2 bg-emerald-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // --- Page Navigation Logic ---
+        function showPage(pageId, clickedLink) {
+            // Hide all page content
+            const pages = document.querySelectorAll('.page-content');
+            pages.forEach(page => {
+                page.classList.add('hidden');
+            });
+
+            // Show the selected page
+            const activePage = document.getElementById(pageId);
+            if (activePage) {
+                activePage.classList.remove('hidden');
+            }
+            
+            // Update active state on navigation links if a link was clicked
+            if (clickedLink) {
+                const navLinks = document.querySelectorAll('.nav-link');
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                });
+                clickedLink.classList.add('active');
+            } else {
+                // If called without a link (e.g., from a button), update nav based on pageId
+                const correspondingLink = document.querySelector(`.nav-link[href="#${pageId}"]`);
+                if (correspondingLink) {
+                    const navLinks = document.querySelectorAll('.nav-link');
+                    navLinks.forEach(link => link.classList.remove('active'));
+                    correspondingLink.classList.add('active');
+                }
+            }
+
+            // Scroll to the top of the page content
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // --- Mobile Menu Logic ---
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        function closeMobileMenu() {
+            if (!mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.add('hidden');
+            }
+        }
+
+        // --- Contact Form Logic ---
+        const contactForm = document.getElementById('contact-form');
+        const successModal = document.getElementById('success-modal');
+        const closeModalButton = document.getElementById('close-modal-button');
+
+        contactForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent actual form submission
+            
+            // In a real application, you would send the data to a server here.
+            // For this example, we'll just show a success message.
+            
+            successModal.style.display = 'flex';
+            contactForm.reset(); // Clear the form fields
+        });
+
+        closeModalButton.addEventListener('click', () => {
+            successModal.style.display = 'none';
+        });
+        
+        // Close modal if backdrop is clicked
+        window.addEventListener('click', (event) => {
+            if (event.target === successModal) {
+                successModal.style.display = 'none';
+            }
+        });
+
+
+        // --- Feather Icons Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            feather.replace(); // Moved inside DOMContentLoaded
+            showPage('home', document.querySelector('.nav-link[href="#home"]'));
+        });
+    </script>
+</body>
+</html>
